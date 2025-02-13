@@ -1,0 +1,45 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+
+export default function ValentineProposal() {
+  const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
+  const [accepted, setAccepted] = useState(false);
+
+  const moveNoButton = () => {
+    const newX = Math.random() * 200 - 100;
+    const newY = Math.random() * 200 - 100;
+    setNoButtonPos({ x: newX, y: newY });
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-pink-200 text-center p-4">
+      {!accepted ? (
+        <div className="p-6 bg-white rounded-2xl shadow-lg w-full max-w-sm">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">
+            Will you be my Valentine? ❤️
+          </h1>
+          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <Button onClick={() => setAccepted(true)} className="bg-red-500 text-white px-6 py-2 rounded-lg shadow-md w-full">
+              Yes 💖
+            </Button>
+            <motion.div animate={noButtonPos} transition={{ type: "spring", stiffness: 200 }}>
+              <Button
+                onMouseEnter={moveNoButton}
+                onTouchStart={moveNoButton}
+                className="bg-gray-500 text-white px-6 py-2 rounded-lg shadow-md w-full"
+              >
+                No 😢
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      ) : (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-red-600">Yay! 🥰 Can't wait to celebrate with you! 🎉</h1>
+          <p className="text-lg mt-4 text-gray-700">Thank you for saying yes! You made my day! 💕</p>
+        </div>
+      )}
+    </div>
+  );
+}
