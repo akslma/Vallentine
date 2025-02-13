@@ -60,13 +60,14 @@
         <h1>Will you be my Valentine? ❤️</h1>
         <div class="buttons">
             <button class="yes" onclick="acceptValentine()">Yes 💖</button>
-            <button class="no" onmouseover="moveButton()" ontouchstart="moveButton()">No 😢</button>
+            <button class="no" ontouchstart="moveButton(event)" onmouseover="moveButton(event)">No 😢</button>
         </div>
         <p id="message" style="display: none; font-size: 20px; margin-top: 20px; color: red;"></p>
     </div>
 
     <script>
-        function moveButton() {
+        function moveButton(event) {
+            event.preventDefault(); // Prevent unintended clicks
             let button = document.querySelector('.no');
             let x = Math.random() * (window.innerWidth - 150);
             let y = Math.random() * (window.innerHeight - 150);
