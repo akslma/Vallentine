@@ -36,6 +36,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            position: relative;
         }
         .yes {
             background-color: red;
@@ -44,7 +45,7 @@
         .no {
             background-color: gray;
             color: white;
-            position: absolute;
+            position: relative;
         }
         @media (max-width: 600px) {
             .buttons {
@@ -67,8 +68,9 @@
     <script>
         function moveButton() {
             let button = document.querySelector('.no');
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 100);
+            let x = Math.random() * (window.innerWidth - 150);
+            let y = Math.random() * (window.innerHeight - 150);
+            button.style.position = 'absolute';
             button.style.left = x + 'px';
             button.style.top = y + 'px';
         }
