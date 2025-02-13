@@ -13,12 +13,16 @@
             background-color: pink;
             text-align: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
         .container {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
         }
         .buttons {
             margin-top: 20px;
@@ -42,6 +46,12 @@
             color: white;
             position: absolute;
         }
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -49,7 +59,7 @@
         <h1>Will you be my Valentine? ❤️</h1>
         <div class="buttons">
             <button class="yes" onclick="acceptValentine()">Yes 💖</button>
-            <button class="no" onmouseover="moveButton()">No 😢</button>
+            <button class="no" onmouseover="moveButton()" ontouchstart="moveButton()">No 😢</button>
         </div>
         <p id="message" style="display: none; font-size: 20px; margin-top: 20px; color: red;"></p>
     </div>
