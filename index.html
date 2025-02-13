@@ -1,45 +1,71 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-
-export default function ValentineProposal() {
-  const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
-  const [accepted, setAccepted] = useState(false);
-
-  const moveNoButton = () => {
-    const newX = Math.random() * 200 - 100;
-    const newY = Math.random() * 200 - 100;
-    setNoButtonPos({ x: newX, y: newY });
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center h-screen bg-pink-200 text-center p-4">
-      {!accepted ? (
-        <div className="p-6 bg-white rounded-2xl shadow-lg w-full max-w-sm">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">
-            Will you be my Valentine? ❤️
-          </h1>
-          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button onClick={() => setAccepted(true)} className="bg-red-500 text-white px-6 py-2 rounded-lg shadow-md w-full">
-              Yes 💖
-            </Button>
-            <motion.div animate={noButtonPos} transition={{ type: "spring", stiffness: 200 }}>
-              <Button
-                onMouseEnter={moveNoButton}
-                onTouchStart={moveNoButton}
-                className="bg-gray-500 text-white px-6 py-2 rounded-lg shadow-md w-full"
-              >
-                No 😢
-              </Button>
-            </motion.div>
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .yes {
+            background-color: red;
+            color: white;
+        }
+        .no {
+            background-color: gray;
+            color: white;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Will you be my Valentine? ❤️</h1>
+        <div class="buttons">
+            <button class="yes" onclick="acceptValentine()">Yes 💖</button>
+            <button class="no" onmouseover="moveButton()">No 😢</button>
         </div>
-      ) : (
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-red-600">Yay! 🥰 Can't wait to celebrate with you! 🎉</h1>
-          <p className="text-lg mt-4 text-gray-700">Thank you for saying yes! You made my day! 💕</p>
-        </div>
-      )}
+        <p id="message" style="display: none; font-size: 20px; margin-top: 20px; color: red;"></p>
     </div>
-  );
-}
+
+    <script>
+        function moveButton() {
+            let button = document.querySelector('.no');
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 100);
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+        }
+
+        function acceptValentine() {
+            document.querySelector('.container').innerHTML = '<h1>Yay! 🥰 Can’t wait to celebrate with you! 🎉</h1><p style="color: red; font-size: 20px;">Thank you for saying yes! You made my day! 💕</p>';
+        }
+    </script>
+</body>
+</html>
