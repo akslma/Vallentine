@@ -1,84 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: pink;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-        }
-        .buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
-        }
-        .yes {
-            background-color: red;
-            color: white;
-        }
-        .no {
-            background-color: gray;
-            color: white;
-            position: relative;
-        }
-        @media (max-width: 600px) {
-            .buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Afit Health App</title>
+
+  <!-- Bootstrap & Chart.js -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Combined Styles */
+    body { margin: 0; padding: 0; background-color: #f8f9fa; font-family: Arial, sans-serif; color: #000; text-align: center; }
+    #welcome-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(to right, #87CEEB, #E6E6FA); height: 100vh; color: #000; }
+    #welcome-screen img { width: 250px; max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); }
+    #welcome-screen h1 { margin-top: 20px; font-size: 28px; color: #222; }
+    .page { display: none; min-height: 100vh; padding: 1rem; }
+    .active-page { display: block; }
+    .container { max-width: 600px; margin: 2rem auto; }
+    #app-header { display: flex; align-items: center; background-color: #87CEEB; color: #000; padding: 0.75rem; margin-bottom: 1rem; }
+    .profile-card { background: #fff; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.15); color: #000; }
+    .chat-box { background-color: #fff; padding: 1rem; border-radius: 8px; max-height: 220px; overflow-y: auto; text-align: left; margin-bottom: 1rem; }
+    .chart-container { position: relative; width: 280px; height: 280px; margin: 1rem auto; }
+    .btn-sky { background-color: #87CEEB; border: none; color: #000; margin-bottom: 0.5rem; }
+    .btn-lavender { background-color: #E6E6FA; border: none; color: #000; margin-bottom: 0.5rem; }
+  </style>
 </head>
+
 <body>
+  <!-- Splash Screen -->
+  <div id="welcome-screen">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAB9VBMVEUAAAB0NEx0NExzME1zME10M0x0M0yUZkyUZkyUZkw0M03TTM3TTM1STg1STjtUEU0ME3VU03VU0z7TXM7TXM0MUu3Oz2xNDWdPUyYOk+MOk+FOE2HNENvREtwNUrbPUmtQE2gP0Z0M0x0NEx0M0xuLEupOUmnOU2kO0qkOEusPEmrOkioOEilOkufN0uYAAAAPk2gQE2dQUyeS2ORNx5MN0n5Xj2BzsYIjOMgAADoCk9/czA0Kug4T3A0XDk2/SoAAAAuElEQVR42u3a2Q6DMAxF0QRYE+sthD7n/90kqFKWVOUr64VXMbBxpAUAAAAAAAAAAAAAAAAAAAAAAAAAAB/0E0UIAUIADK6fs3zodTH0BgMGACjcrccrwrebcEAmefTn8q+3dO5+I97nl88ro+rf5NXzHzlz9v/Td/v5D/jXtNAQAAAAAAAAAAAAAAAACAf4Ag/wAZ+n8IfRxE+iwAAAAASUVORK5CYII=" alt="Afit Health App Logo"/>
+    <h1>Afit Health App</h1>
+  </div>
+
+  <!-- Authentication Page -->
+  <div id="auth-page" class="page">
     <div class="container">
-        <h1>Will you be my Valentine? ❤️</h1>
-        <div class="buttons">
-            <button class="yes" onclick="acceptValentine()">Yes 💖</button>
-            <button class="no" ontouchstart="moveButton(event)" onmouseover="moveButton(event)">No 😢</button>
-        </div>
-        <p id="message" style="display: none; font-size: 20px; margin-top: 20px; color: red;"></p>
+      <h2>Login or Sign Up</h2>
+      <input type="email" id="email" class="form-control mb-2" placeholder="Email">
+      <input type="password" id="password" class="form-control mb-2" placeholder="Password (must include symbols)">
+      <button class="btn btn-sky btn-lg" onclick="signUp()">Sign Up</button>
+      <button class="btn btn-lavender btn-lg" onclick="login()">Login</button>
     </div>
+  </div>
 
-    <script>
-        function moveButton(event) {
-            event.preventDefault(); // Prevent unintended clicks
-            let button = document.querySelector('.no');
-            let x = Math.random() * (window.innerWidth - 150);
-            let y = Math.random() * (window.innerHeight - 150);
-            button.style.position = 'absolute';
-            button.style.left = x + 'px';
-            button.style.top = y + 'px';
-        }
+  <!-- Profile Page -->
+  <div id="profile-page" class="page">
+    <div class="container">
+      <h2>Create Your Profile</h2>
+      <form id="profile-form">
+        <input type="text" id="name" class="form-control mb-2" placeholder="Full Name" required>
+        <input type="number" id="age" class="form-control mb-2" placeholder="Age" required>
+        <input type="number" id="height" class="form-control mb-2" placeholder="Height (cm)" required>
+        <input type="number" id="weight" class="form-control mb-2" placeholder="Weight (kg)" required>
+        <select id="activity-level" class="form-select mb-2">
+          <option value="1.2">Sedentary (No exercise)</option>
+          <option value="1.375">Light exercise (1-3 days)</option>
+          <option value="1.55">Moderate exercise (3-5 days)</option>
+          <option value="1.725">Very active (6-7 days)</option>
+          <option value="1.9">Extra active (Hard exercise + job)</option>
+        </select>
+        <button type="submit" class="btn btn-sky btn-lg">Save Profile</button>
+      </form>
+    </div>
+  </div>
 
-        function acceptValentine() {
-            document.querySelector('.container').innerHTML = '<h1>Yay! 🥰 Can’t wait to celebrate with you! 🎉</h1><p style="color: red; font-size: 20px;">Thank you for saying yes! You made my day! 💕</p>';
+  <!-- Home Page -->
+  <div id="home-page" class="page">
+    <div class="container">
+      <h2>Welcome, <span id="user-name"></span></h2>
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action" onclick="navigateTo('maintenance-page')">
+          Maintenance Calories
+        </button>
+        <button class="list-group-item list-group-item-action" onclick="navigateTo('goal-page')">
+          Set Your Goal
+        </button>
+        <button class="list-group-item list-group-item-action" onclick="navigateTo('food-page')">
+          Suggested Food
+        </button>
+        <button class="list-group-item list-group-item-action" onclick="navigateTo('intake-page')">
+          Calorie Intake (AI Chat)
+        </button>
+        <button class="list-group-item list-group-item-action" onclick="navigateTo('dashboard-page')">
+          Dashboard
+        </button>
+        <button class="list-group-item list-group-item-action" onclick="logout()">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maintenance Page -->
+  <div id="maintenance-page" class="page">
+    <div class="container">
+      <h2>Maintenance Calories</h2>
+      <p id="maintenance-result" class="mt-4"></p>
+      <button class="btn btn-lavender mt-3" onclick="navigateTo('home-page')">Back</button>
+    </div>
+  </div>
+
+  <!-- Goal Page Stub -->
+  <div id="goal-page" class="page">
+    <div class="container">
+      <h2>Set Your Goal</h2>
+      <p>Feature not implemented yet.</p>
+      <button class="btn btn-lavender mt-3" onclick="navigateTo('home-page')">Back</button>
+    </div>
+  </div>
+
+  <!-- Suggested Food Page Stub -->
+  <div id="food-page" class="page">
+    <div class="container">
+      <h2>Suggested Food</h2>
+      <p>Feature not implemented yet.</p>
+      <button class="btn btn-lavender mt-3" onclick="navigateTo('home-page')">Back</button>
+    </div>
+  </div>
+
+  <!-- Calorie Intake (AI Chat) Page Stub -->
+  <div id="intake-page" class="page">
+    <div class="container">
+      <h2>Calorie Intake (AI Chat)</h2>
+      <p>Feature not implemented yet.</p>
+      <button class="btn btn-lavender mt-3" onclick="navigateTo('home-page')">Back</button>
+    </div>
+  </div>
+
+  <!-- Dashboard Page with Chart.js -->
+  <div id="dashboard-page" class="page">
+    <div class="container">
+      <h2>Dashboard</h2>
+      <div class="chart-container">
+        <canvas id="calorieChart"></canvas>
+      </div>
+      <button class="btn btn-lavender mt-3" onclick="navigateTo('home-page')">Back</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK and App Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLgcN5Px-fxknBz2yFJppyQDRhPl5Hj2I",
+      authDomain: "afit-23248.firebaseapp.com",
+      projectId: "afit-23248",
+      storageBucket: "afit-23248.appspot.com",
+      messagingSenderId: "209392330140",
+      appId: "1:209392330140:web:462d11adf0bc1b0ae1d459",
+      measurementId: "G-E8CPSBC2TE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
+
+    let currentUserProfile = null;
+    let maintenanceCalories = 0;
+    let goalCalories = 0; // Placeholder for goal calories
+
+    // Authentication Functions
+    window.signUp = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      
+      // Validate password complexity: uppercase, lowercase, number, symbol
+      if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[\W]/.test(password)) {
+        alert("Password must include uppercase, lowercase, number, and symbol!");
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        showPage("profile-page");
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    window.login = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        alert("Login failed: " + error.message);
+      }
+    };
+
+    window.logout = async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        alert("Logout failed: " + error.message);
+      }
+    };
+
+    // Profile Management
+    document.getElementById("profile-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const profileData = {
+        name: document.getElementById("name").value,
+        age: parseInt(document.getElementById("age").value),
+        height: parseInt(document.getElementById("height").value),
+        weight: parseFloat(document.getElementById("weight").value),
+        activityLevel: parseFloat(document.getElementById("activity-level").value)
+      };
+
+      try {
+        await setDoc(doc(db, "profiles", user.uid), profileData);
+        currentUserProfile = profileData;
+        calculateMaintenance();
+        showPage("home-page");
+        document.getElementById("user-name").textContent = profileData.name;
+      } catch (error) {
+        alert("Error saving profile: " + error.message);
+      }
+    });
+
+    async function loadProfile(userId) {
+      try {
+        const docSnap = await getDoc(doc(db, "profiles", userId));
+        if (docSnap.exists()) {
+          currentUserProfile = docSnap.data();
+          document.getElementById("user-name").textContent = currentUserProfile.name;
+          calculateMaintenance();
+          showPage("home-page");
+        } else {
+          showPage("profile-page");
         }
-    </script>
+      } catch (error) {
+        alert("Error loading profile: " + error.message);
+      }
+    }
+
+    function calculateMaintenance() {
+      if (!currentUserProfile) return;
+      // Using Mifflin-St Jeor Equation (male)
+      const bmr = 10 * currentUserProfile.weight + 6.25 * currentUserProfile.height - 5 * currentUserProfile.age + 5;
+      maintenanceCalories = Math.round(bmr * currentUserProfile.activityLevel);
+      document.getElementById("maintenance-result").innerHTML = 
+        `<strong>${currentUserProfile.name}</strong>, your maintenance calories: <strong>${maintenanceCalories} kcal/day</strong>`;
+    }
+
+    // Navigation
+    function showPage(pageId) {
+      document.querySelectorAll(".page").forEach((p) => p.classList.remove("active-page"));
+      const page = document.getElementById(pageId);
+      if (page) {
+        page.classList.add("active-page");
+      }
+    }
+
+    window.navigateTo = (pageId) => {
+      if (pageId === 'maintenance-page') {
+        calculateMaintenance();
+      }
+      showPage(pageId);
+      // If navigating to dashboard, render the chart
+      if (pageId === 'dashboard-page') {
+        renderChart();
+      }
+    };
+
+    // Dashboard Chart Rendering
+    function renderChart() {
+      const ctx = document.getElementById('calorieChart').getContext('2d');
+      // Remove any previous chart instance by clearing the canvas
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      const data = {
+        labels: ['Maintenance', 'Goal'],
+        datasets: [{
+          data: [maintenanceCalories, goalCalories || 0],
+          backgroundColor: ['#87CEEB', '#E6E6FA']
+        }]
+      };
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    // Firebase Auth State Listener
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // If user is signed in, hide splash and load profile
+        document.getElementById("welcome-screen").style.display = "none";
+        loadProfile(user.uid);
+      } else {
+        // No user signed in
+        showPage("auth-page");
+        document.getElementById("welcome-screen").style.display = "flex";
+      }
+    });
+  </script>
 </body>
 </html>
